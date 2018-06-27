@@ -26,13 +26,13 @@ int main(){
 
 
 ```
-// foo.h
+// foo-inline.h
 inline int add(int a, int b) {
    return (a + b);
 }
 
-// main.cpp
-#include "foo.h"
+// main-inline.cpp
+#include "foo-inline.h"
 
 int main(){
   // A a;
@@ -46,14 +46,22 @@ int main(){
 
 ## Compilation  step
 ```
-g++ -O2 main.cpp -o main
+// inline case
+g++ -O2 main-inline.cpp -o main
+objdump -M intel -d main-inline > main-inline.s
+
+// non-inline case
+g++ -O2 main.cpp foo.cpp -o main
 objdump -M intel -d main > main.s
 ```
 
 ## Comparing results
+```
+meld main.s main-inline.s 
+```
 
 ```
-// inline case
+// main-inline.s
 
 00000000004003e0 <main>:
   4003e0:	b8 01 00 00 00       	mov    eax,0x1
@@ -61,7 +69,7 @@ objdump -M intel -d main > main.s
   4003e6:	66 2e 0f 1f 84 00 00 	nop    WORD PTR cs:[rax+rax*1+0x0]
   4003ed:	00 00 00
   
-// non-inline case
+// main.s
 
 00000000004004f0 <_Z3addii>:
   4004f0:	8d 04 37             	lea    eax,[rdi+rsi*1]
