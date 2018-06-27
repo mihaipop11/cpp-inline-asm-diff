@@ -65,11 +65,11 @@ int main(){
 ## Compilation  step
 ```
 // inline case
-g++ -O2 main-inline.cpp -o main
+g++ -O2 main-inline.cpp -std=c++11 -o main
 objdump -M intel -d main-inline > main-inline.s
 
 // non-inline case
-g++ -O2 main.cpp foo.cpp -o main
+g++ -O2 main.cpp foo.cpp -std=c++11 -o main
 objdump -M intel -d main > main.s
 ```
 
